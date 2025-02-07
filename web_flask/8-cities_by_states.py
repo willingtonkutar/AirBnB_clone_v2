@@ -1,26 +1,30 @@
-#!/usr/bin/python3
-"""Module to display the states and the cities in a template
+#!/usr/bin/python
 """
 
-
+"""
 from flask import Flask, render_template
-from models import storage
 from models.state import State
+from models import storage
 
 app = Flask(__name__)
 
 
-@app.route('/cities_by_states', strict_slashes=False)
-def cities_template():
-    """Function to return display a template of cities from db"""
-    states = storage.all(State)
-    return render_template('8-cities_by_states.html', states=states.values())
-
-
 @app.teardown_appcontext
-def teardown_db(exception):
-    """Function to close the connection to the database"""
+def teardown(exception):
+    """
+
+    """
     storage.close()
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+
+@app.route('/cities_by_states', strict_slashes=False)
+def states_list():
+    """
+    State list
+    """
+    states = storage.all(State)
+    return render_template('8-cities_by_states.html', states=states)
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
